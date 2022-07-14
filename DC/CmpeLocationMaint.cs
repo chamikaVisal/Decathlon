@@ -2,7 +2,6 @@
 using PX.Data;
 using PX.Data.BQL.Fluent;
 using PX.Objects.DC.DAC;
-
 using Messages = PX.Objects.DC.Descriptor.Messages;
 
 namespace PX.Objects.DC

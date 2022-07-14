@@ -7,6 +7,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Messages = PX.Objects.DC.Descriptor.Messages;
+
 
 namespace PX.Objects.DC
 {
@@ -167,8 +169,7 @@ namespace PX.Objects.DC
 			switch (e.ReturnValue)
 			{
 				case -1:
-					// Acuminator disable once PX1050 HardcodedStringInLocalizationMethod [Justification]
-					e.ReturnState = PXFieldState.CreateInstance(PXMessages.LocalizeNoPrefix("TOTAL"), typeof(string), false, null, null, null, null, null,nameof(CmpeInventoryStatus.locationid), null, GetLocationDisplayName(), null, PXErrorLevel.Undefined, null, null, null, PXUIVisibility.Undefined, null, null, null);
+					e.ReturnState = PXFieldState.CreateInstance(PXMessages.LocalizeNoPrefix(Messages.Total), typeof(string), false, null, null, null, null, null,nameof(CmpeInventoryStatus.locationid), null, GetLocationDisplayName(), null, PXErrorLevel.Undefined, null, null, null, PXUIVisibility.Undefined, null, null, null);
 					e.Cancel = true;
 					{ }
 					break;

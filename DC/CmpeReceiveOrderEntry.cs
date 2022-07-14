@@ -44,8 +44,5 @@ namespace PX.Objects.DC
 			OrderDetails.UpdateCurrent();
 		}
 		#endregion
-
-
-
 	}
 }

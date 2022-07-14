@@ -1,13 +1,11 @@
-﻿using System;
-using PX.Data;
+﻿using PX.Data;
 using PX.Data.BQL.Fluent;
 using PX.Objects.DC.DAC;
-using static PX.Objects.DC.Descriptor.Constants;
 using System.Collections;
 using PX.Common;
-using PX.Data.BQL;
-using System.Collections.Generic;
 using System.Linq;
+using static PX.Objects.DC.Descriptor.Constants;
+using Messages = PX.Objects.DC.Descriptor.Messages;
 
 namespace PX.Objects.DC
 {
@@ -123,15 +121,13 @@ namespace PX.Objects.DC
 
 			if (e.Row.TotalQuantity > inventoryitem.Quantityinhand)
 			{
-				// Acuminator disable once PX1050 HardcodedStringInLocalizationMethod [Justification]
-				BOMDetails.Cache.RaiseExceptionHandling("TotalQuantity", e.Row, e.Row.TotalQuantity, new PXException("no quantity", typeof(CmpeProductStructure.quantity)));
+				BOMDetails.Cache.RaiseExceptionHandling("TotalQuantity", e.Row, e.Row.TotalQuantity, new PXException(Messages.NoQuantity, typeof(CmpeProductStructure.quantity)));
 				// Acuminator disable once PX1070 UiPresentationLogicInEventHandlers [Justification]
 				Save.SetEnabled(false);
 			}
 			else if (inventoryitem.Quantityinhand == null)
 			{
-				// Acuminator disable once PX1050 HardcodedStringInLocalizationMethod [Justification]
-				BOMDetails.Cache.RaiseExceptionHandling("TotalQuantity", e.Row, e.Row.TotalQuantity, new PXException("no quantity in hand"));
+				BOMDetails.Cache.RaiseExceptionHandling("TotalQuantity", e.Row, e.Row.TotalQuantity, new PXException(Messages.QuantityNotFound));
 			}
 		}
 
@@ -260,8 +256,7 @@ namespace PX.Objects.DC
 			}
 			catch
 			{
-				// Acuminator disable once PX1050 HardcodedStringInLocalizationMethod [Justification]
-				throw new PXException("ERROR");
+				throw new PXException(Messages.UnexpectedError);
 			}
 			
 		}

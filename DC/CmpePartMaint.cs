@@ -3,6 +3,7 @@ using PX.Data;
 using PX.Data.BQL.Fluent;
 using PX.Objects.DC.DAC;
 using static PX.Objects.DC.Descriptor.Constants;
+using Messages = PX.Objects.DC.Descriptor.Messages;
 
 namespace PX.Objects.DC
 {
@@ -26,8 +27,7 @@ namespace PX.Objects.DC
 
 			if (row.ItemType == ItemTypes.Stock && row.Type == null)
 			{
-				// Acuminator disable once PX1050 HardcodedStringInLocalizationMethod [Justification]
-				e.Cache.RaiseExceptionHandling<CmpePart.type>(row, row.Type, new PXException("Part Type should be selected!"));
+				e.Cache.RaiseExceptionHandling<CmpePart.type>(row, row.Type, new PXException(Messages.TypeNotSelected));
 			}
 		}
 
@@ -44,17 +44,9 @@ namespace PX.Objects.DC
 				e.Cache.SetValueExt<CmpePart.type>(row, null);
 			}
 		}
-
-
-
+		#endregion
 	}
-
-
 }
-
-
-
-
-	#endregion
+	
 
 
