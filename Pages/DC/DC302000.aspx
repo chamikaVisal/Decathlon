@@ -15,10 +15,10 @@
     <px:PXFormView ID="form" runat="server" DataSourceID="ds" DataMember="Document" Width="100%" AllowAutoHide="false">
         <Template>
             <px:PXLayoutRule LabelsWidth="S" ControlSize="M" runat="server" ID="PXLayoutRule1" StartRow="True"></px:PXLayoutRule>
-            <px:PXSelector runat="server" ID="PXSelector2" DataField="ProductID" ></px:PXSelector>
+            <px:PXSelector runat="server" ID="PXSelector2" DataField="ProductID" Enabled="false" ></px:PXSelector>
             <px:PXSelector runat="server" ID="CstPXSelector" DataField="WarehouseID" CommitChanges="true" AutoRefresh="true"></px:PXSelector>
             <px:PXSelector runat="server" ID="PXSelector1" DataField="LocationID" CommitChanges="true"  AutoRefresh="true"></px:PXSelector>
-            <px:PXTextEdit runat="server" ID="CstPXTextEdit2" DataField="Quantity" ></px:PXTextEdit>
+            <px:PXTextEdit runat="server" ID="CstPXTextEdit2" DataField="Quantity" Enabled="false" ></px:PXTextEdit>
         </Template>
         <AutoSize Container="Window" Enabled="True" MinHeight="200"></AutoSize>
     </px:PXFormView>

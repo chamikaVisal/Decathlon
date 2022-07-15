@@ -27,11 +27,11 @@ namespace PX.Objects.DC.Descriptor
 		}
 		public static class ProductionOrderStatuses
 		{
-			public const string Not_Set = "Not Set";
-			public const string Released = "Released";
-			public const string Reserved = "Reserved";
-			public const string Closed = "Closed";
-			public const string Cancelled = "Cancelled";
+			public const string Released = "RE";
+			public const string Reserved = "RS";
+			public const string Closed = "CL";
+			public const string Cancelled = "CN";
+			public const string Not_Set = "NS";
 		}
 		public class released : PX.Data.BQL.BqlString.Constant<released> { public released() : base(ProductionOrderStatuses.Released) { } }
 		public class reserved : PX.Data.BQL.BqlString.Constant<reserved> { public reserved() : base(ProductionOrderStatuses.Reserved) { } }

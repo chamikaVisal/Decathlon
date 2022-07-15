@@ -6,6 +6,7 @@ using PX.Common;
 using System.Linq;
 using static PX.Objects.DC.Descriptor.Constants;
 using Messages = PX.Objects.DC.Descriptor.Messages;
+using PX.Data.WorkflowAPI;
 
 namespace PX.Objects.DC
 {
@@ -32,6 +33,15 @@ namespace PX.Objects.DC
 		#endregion
 
 		#region Actions
+
+		public PXAction<CmpeProductionOrder> Release;
+		[PXButton]
+		[PXUIField(DisplayName = "Release")]
+		protected virtual IEnumerable release(PXAdapter adapter)
+		{
+			return adapter.Get();
+		}
+
 		public PXAction<CmpeProductionOrder> IssueMaterial;
 		[PXButton]
 		[PXUIField(DisplayName = "Issue Material", Enabled = true)]
@@ -59,24 +69,34 @@ namespace PX.Objects.DC
 		[PXUIField(DisplayName = "Receive Shop Order", Enabled = true)]
 		protected virtual IEnumerable receiveShopOrder(PXAdapter adapter)
 		{
-			if (OrderDetails.Current != null)
+			try
 			{
-				var dialogBoxGraph = CreateInstance<CmpeReceiveOrderEntry>();
+				if (OrderDetails.Current != null)
+				{
+					var dialogBoxGraph = CreateInstance<CmpeReceiveOrderEntry>();
 
-				dialogBoxGraph.Document.Cache.Clear();
-				dialogBoxGraph.Document.Current = SelectFrom<CmpeProductionOrderAllocation>.View.Select(dialogBoxGraph);
-				dialogBoxGraph.Document.Current.Quantity = OrderDetails.Current.LotSize;
-				dialogBoxGraph.Document.Current.ProductID = OrderDetails.Current.ProductNumber;
+					dialogBoxGraph.Document.Cache.Clear();
+					dialogBoxGraph.Document.Current = SelectFrom<CmpeProductionOrderAllocation>.View.Select(dialogBoxGraph);
+					dialogBoxGraph.Document.Current.Quantity = OrderDetails.Current.LotSize;
+					dialogBoxGraph.Document.Current.ProductID = OrderDetails.Current.ProductNumber;
 
-				dialogBoxGraph.Document.Current.WarehouseID = null;
-				dialogBoxGraph.Document.Current.LocationID = null;
-				dialogBoxGraph.Document.UpdateCurrent();
+					dialogBoxGraph.Document.Current.WarehouseID = null;
+					dialogBoxGraph.Document.Current.LocationID = null;
+					dialogBoxGraph.Document.UpdateCurrent();
 
-				//dialogBoxGraph.OrderDetails.Current = OrderDetails.Current;
-				//dialogBoxGraph.OrderDetails.Current.ProductionOrderStatus = ProductionOrderStatuses.Closed;
+					dialogBoxGraph.OrderDetails.Current = OrderDetails.Current;
+					//dialogBoxGraph.OrderDetails.Current.ProductionOrderStatus = ProductionOrderStatuses.Closed;
 
-				throw new PXPopupRedirectException(dialogBoxGraph, "Receive Shop Order");
+					throw new PXPopupRedirectException(dialogBoxGraph, "Receive Shop Order");
+				}
 			}
+			finally
+			{
+				CmpeProductionOrderMaint grp = PXGraph.CreateInstance<CmpeProductionOrderMaint>();
+				grp.OrderDetails.Cache.Clear();
+				grp.OrderDetails.View.RequestRefresh();
+			}
+		
 
 			return adapter.Get();
 		}
@@ -84,16 +104,16 @@ namespace PX.Objects.DC
 
 		#region Events
 
-		protected virtual void _(Events.RowPersisting<CmpeProductionOrder> e)
-		{
-			CmpeProductionOrder row = e.Row;
+		//protected virtual void _(Events.RowPersisting<CmpeProductionOrder> e)
+		//{
+		//	CmpeProductionOrder row = e.Row;
 
-			if (row.ProductionOrderStatus == ProductionOrderStatuses.Not_Set)
-			{
-				row.ProductionOrderStatus = ProductionOrderStatuses.Released;
-				OrderDetails.Update(row);
-			}
-		}
+		//	if (row.ProductionOrderStatus == ProductionOrderStatuses.Not_Set)
+		//	{
+		//		row.ProductionOrderStatus = ProductionOrderStatuses.Released;
+		//		OrderDetails.Update(row);
+		//	}
+		//}
 
 		protected virtual void _(Events.FieldUpdated<CmpeProductionOrder,CmpeProductionOrder.lotSize> e)
 		{
@@ -192,6 +212,10 @@ namespace PX.Objects.DC
 			//}
 
 		}
+		#endregion
+
+		#region WorlflowEventHandler
+		public PXWorkflowEventHandler<CmpeProductionOrder, CmpeProductionOrderAllocation> OnSaveReceiveStock;
 		#endregion
 
 		public void ReduceStock(PXResultset<CmpeProductStructure> productStructure)

@@ -25,7 +25,7 @@
             <px:PXLayoutRule ControlSize="M" LabelsWidth="S" ID="PXLayoutRule2" runat="server" StartColumn="True"></px:PXLayoutRule>
             <px:PXSelector runat="server" ID="PXSelector2" DataField="ProductNumber" CommitChanges="true"></px:PXSelector>
             <px:PXTextEdit runat="server" ID="CstPXNumberEdit2" DataField="LotSize" CommitChanges="true"></px:PXTextEdit>
-            <px:PXTextEdit runat="server" ID="PXTextEdit2" DataField="ProductionOrderStatus" CommitChanges="true" Enabled="false"></px:PXTextEdit>
+            <px:PXDropDown runat="server" ID="PXTextEdit2" DataField="ProductionOrderStatus" CommitChanges="true" Enabled="false" AutoRefresh="true"></px:PXDropDown>
         </Template>
     </px:PXFormView>
 </asp:Content>

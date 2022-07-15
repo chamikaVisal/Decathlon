@@ -4,6 +4,7 @@ using PX.Objects.DC.DAC;
 using PX.Objects.DC.Descriptor;
 using System.Collections;
 using System.Linq;
+using static PX.Objects.DC.Descriptor.Constants;
 
 namespace PX.Objects.DC
 {
@@ -43,6 +44,20 @@ namespace PX.Objects.DC
 
 			OrderDetails.UpdateCurrent();
 		}
+
+		protected virtual void _(Events.RowPersisted<CmpeProductionOrderAllocation> e)
+		{
+			OrderDetails.Current.ProductionOrderStatus = ProductionOrderStatuses.Closed;
+			OrderDetails.UpdateCurrent();
+
+			// Acuminator disable once PX1045 PXGraphCreateInstanceInEventHandlers [Justification]
+			CmpeProductionOrderMaint grp = PXGraph.CreateInstance<CmpeProductionOrderMaint>();
+			grp.OrderDetails.Cache.Clear();
+			grp.OrderDetails.View.RequestRefresh();
+
+			CmpeProductionOrderAllocation.Events.Select(ev => ev.SaveDocument).FireOn(this, e.Row);
+		}
 		#endregion
+
 	}
 }

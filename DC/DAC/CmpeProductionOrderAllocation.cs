@@ -1,11 +1,19 @@
 ﻿using System;
 using PX.Data;
+using PX.Data.WorkflowAPI;
 
 namespace PX.Objects.DC.DAC
 {
 	[PXCacheName("Production Order Allocation")]
 	public class CmpeProductionOrderAllocation : IBqlTable
 	{
+		#region Events
+		public class Events : PXEntityEvent<CmpeProductionOrderAllocation>.Container<Events>
+		{
+			public PXEntityEvent<CmpeProductionOrderAllocation> SaveDocument;
+		}
+		#endregion
+
 		#region CustomerOrderAllocationID
 		[PXDBIdentity(IsKey =true)]
 		public virtual int? CustomerOrderAllocationID { get; set; }
@@ -15,6 +23,9 @@ namespace PX.Objects.DC.DAC
 		#region ProductID
 		[PXDBInt]
 		[PXUIField(DisplayName = "Product")]
+		[PXSelector(typeof(Search<CmpePart.partid, Where<CmpePart.partid.IsEqual<productID.FromCurrent>>>),
+		typeof(CmpePart.partcd),
+		typeof(CmpePart.description), SubstituteKey = typeof(CmpePart.partcd))]
 		public virtual int? ProductID { get; set; }
 		public abstract class productID : PX.Data.BQL.BqlInt.Field<productID> { }
 		#endregion
