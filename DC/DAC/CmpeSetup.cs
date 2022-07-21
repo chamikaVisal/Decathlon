@@ -7,7 +7,6 @@ namespace PX.Objects.DC.DAC
 {
 	[Serializable]
 	[PXCacheName("Numbering Sequence Preferences")]
-	//[PXPrimaryGraph(typeof(CmpeSetupMaint))]
 	public class CmpeSetup : IBqlTable
 	{
 		//For Production order | OrderID

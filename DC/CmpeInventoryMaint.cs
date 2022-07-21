@@ -17,10 +17,10 @@ namespace PX.Objects.DC
 	{
 		#region PartID
 		[PXInt]
-		[PXSelector(typeof(Search<CmpePart.partid>),
-		typeof(CmpePart.partid),
-		typeof(CmpePart.partcd),
-		SubstituteKey = typeof(CmpePart.partcd))]
+		[PXSelector(typeof(Search<CmpePart.partID>),
+		typeof(CmpePart.partID),
+		typeof(CmpePart.partCD),
+		SubstituteKey = typeof(CmpePart.partCD))]
 		[PXUIField(DisplayName = "Part")]
 		public virtual int? PartID { get; set; }
 		public abstract class partid : PX.Data.BQL.BqlInt.Field<partid> { }
@@ -28,10 +28,10 @@ namespace PX.Objects.DC
 
 		#region WarehouseID
 		[PXInt]
-		[PXSelector(typeof(Search<CmpeWarehouse.warehouseid>),
-		typeof(CmpeWarehouse.warehousecd),
-		typeof(CmpeWarehouse.warehousedescription),
-		SubstituteKey = typeof(CmpeWarehouse.warehousecd))]
+		[PXSelector(typeof(Search<CmpeWarehouse.warehouseID>),
+		typeof(CmpeWarehouse.warehouseCD),
+		typeof(CmpeWarehouse.warehouseDescription),
+		SubstituteKey = typeof(CmpeWarehouse.warehouseCD))]
 		[PXUIField(DisplayName = "Warehouse")]
 		public virtual int? WarehouseID { get; set; }
 		public abstract class warehouseid : PX.Data.BQL.BqlInt.Field<warehouseid> { }
@@ -39,7 +39,7 @@ namespace PX.Objects.DC
 
 		#region LocationID
 		[PXInt]
-		[PXSelector(typeof(Search<CmpeLocation.locationID, Where<CmpeLocation.warehouseid, Equal<Current<warehouseid>>>>),
+		[PXSelector(typeof(Search<CmpeLocation.locationID, Where<CmpeLocation.warehouseID, Equal<Current<warehouseid>>>>),
 		typeof(CmpeLocation.locationID),
 		typeof(CmpeLocation.locationCD),
 		SubstituteKey = typeof(CmpeLocation.locationCD))]
@@ -67,7 +67,6 @@ namespace PX.Objects.DC
 
 		protected virtual IEnumerable iNStatusRecords()
 		{
-
 			INStatusRecords.Cache.Clear();
 
 			foreach (var item in FetchINStatusRecord().OfType<CmpeInventoryStatus>())
@@ -97,64 +96,55 @@ namespace PX.Objects.DC
 
 		protected virtual IEnumerable FetchINStatusRecord()
 		{
-			var cmd = new SelectFrom<CmpeInventoryStatus>
-						.InnerJoin<CmpePart>.On<CmpePart.partid.IsEqual<CmpeInventoryStatus.partid>>
-						.InnerJoin<CmpeWarehouse>.On<CmpeWarehouse.warehouseid.IsEqual<CmpeInventoryStatus.warehouseid>>
-						.InnerJoin<CmpeLocation>
-							.On<CmpeLocation.warehouseid.IsEqual<CmpeWarehouse.warehouseid>
-							.And<CmpeLocation.locationID.IsEqual<CmpeInventoryStatus.locationid>>>.View(this);
+			var cmd = new SelectFrom<CmpeInventoryStatus>.View(this);
 
 			if (Filter.Current.PartID != null)
 			{
-				cmd.WhereAnd<Where<CmpePart.partid.IsEqual<InventoryStockfilter.partid.FromCurrent>>>();
+				cmd.WhereAnd<Where<CmpeInventoryStatus.partID.IsEqual<InventoryStockfilter.partid.FromCurrent>>>();
 			}
 
 			if (Filter.Current.WarehouseID != null)
 			{
-				cmd.WhereAnd<Where<CmpeWarehouse.warehouseid.IsEqual<InventoryStockfilter.warehouseid.FromCurrent>>>();
+				cmd.WhereAnd<Where<CmpeInventoryStatus.warehouseID.IsEqual<InventoryStockfilter.warehouseid.FromCurrent>>>();
 
 				if (Filter.Current.LocationID != null)
 				{
-					cmd.WhereAnd<Where<CmpeLocation.locationID.IsEqual<InventoryStockfilter.locationid.FromCurrent>>>();
+					cmd.WhereAnd<Where<CmpeInventoryStatus.locationID.IsEqual<InventoryStockfilter.locationid.FromCurrent>>>();
 				}
 			}
 
 			List<Type> fieldsScope = new List<Type>(new Type[]{
-				typeof(CmpeInventoryStatus.inventorystatusid),
+				typeof(CmpeInventoryStatus.inventoryStatusID),
 				typeof(CmpeInventoryStatus.quantity),
-				typeof(CmpePart.partcd),
-				typeof(CmpeWarehouse.warehousecd),
-				typeof(CmpeLocation.locationCD)
+				typeof(CmpeInventoryStatus.partID),
+				typeof(CmpeInventoryStatus.warehouseID),
+				typeof(CmpeInventoryStatus.locationID)
 			});
 
 
-			var resultSet = new List<(CmpeInventoryStatus instatus, CmpePart part, CmpeWarehouse warehouse, CmpeLocation location)>();
+			var resultSet = new List<CmpeInventoryStatus>();
 
 			using (new PXFieldScope(cmd.View, fieldsScope.ToArray()))
 			{
-				foreach (PXResult<CmpeInventoryStatus, CmpePart, CmpeWarehouse, CmpeLocation> result in cmd.Select())
+				foreach (CmpeInventoryStatus result in cmd.Select())
 				{
-					CmpeInventoryStatus inSatus = result;
-					CmpePart part = result;
-					CmpeWarehouse warehouse = result;
-					CmpeLocation location = result;
-
-					resultSet.Add((inSatus, part, warehouse, location));
+					resultSet.Add(result);
 				}
 			}
 
 			return resultSet
-				.OrderBy(x => x.part.Partcd)
-				.ThenBy(x => x.warehouse.Warehousecd)
-				.ThenBy(x => x.location.LocationCD)
-				.Select(x => x.instatus);
+				.OrderBy(x => x.PartID)
+				.ThenBy(x => x.WarehouseID)
+				.ThenBy(x => x.LocationID)
+				.Select(x => x);
 		}
+
 
 		private CmpeInventoryStatus CalculateSummaryTotal(IEnumerable<CmpeInventoryStatus> resultsset)
 		{
 			CmpeInventoryStatus total = resultsset.CalculateSumTotal(INStatusRecords.Cache);
 
-			total.Inventorystatusid = null;
+			total.InventoryStatusID = null;
 			total.PartID = null;
 			total.WarehouseID = null;
 			total.LocationID = -1;
@@ -164,12 +154,12 @@ namespace PX.Objects.DC
 			return total;
 		}
 
-		protected virtual void _(Events.FieldSelecting<CmpeInventoryStatus.locationid> e)
+		protected virtual void _(Events.FieldSelecting<CmpeInventoryStatus.locationID> e)
 		{
 			switch (e.ReturnValue)
 			{
 				case -1:
-					e.ReturnState = PXFieldState.CreateInstance(PXMessages.LocalizeNoPrefix(Messages.Total), typeof(string), false, null, null, null, null, null,nameof(CmpeInventoryStatus.locationid), null, GetLocationDisplayName(), null, PXErrorLevel.Undefined, null, null, null, PXUIVisibility.Undefined, null, null, null);
+					e.ReturnState = PXFieldState.CreateInstance(PXMessages.LocalizeNoPrefix(Messages.Total), typeof(string), false, null, null, null, null, null,nameof(CmpeInventoryStatus.LocationID), null, GetLocationDisplayName(), null, PXErrorLevel.Undefined, null, null, null, PXUIVisibility.Undefined, null, null, null);
 					e.Cancel = true;
 					{ }
 					break;
@@ -179,7 +169,7 @@ namespace PX.Objects.DC
 
 		private string GetLocationDisplayName()
 		{
-			var displayName = PXUIFieldAttribute.GetDisplayName<CmpeInventoryStatus.locationid>(INStatusRecords.Cache);
+			var displayName = PXUIFieldAttribute.GetDisplayName<CmpeInventoryStatus.locationID>(INStatusRecords.Cache);
 			if (displayName != null) displayName = PXMessages.LocalizeNoPrefix(displayName);
 
 			return displayName;

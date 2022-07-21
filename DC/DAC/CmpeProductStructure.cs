@@ -17,9 +17,9 @@ namespace PX.Objects.DC.DAC
 
 		#region ProductID
 		[PXDBInt(IsKey = true)]
-		[PXDBDefault(typeof(CmpePart.partid))]
+		[PXDBDefault(typeof(CmpePart.partID))]
 		[PXParent(typeof(SelectFrom<CmpePart>.
-			Where<CmpePart.partid.
+			Where<CmpePart.partID.
 			IsEqual<productID.FromCurrent>>))]
 		public virtual int? ProductID { get; set; }
 		public abstract class productID : PX.Data.BQL.BqlInt.Field<productID> { }
@@ -29,9 +29,9 @@ namespace PX.Objects.DC.DAC
 		[PXDBInt(IsKey =true)]
 		[PXUIField(DisplayName = "Part Name")]
 		[PXDBDefault()]
-		[PXSelector(typeof(Search<CmpePart.partid, Where<CmpePart.type.IsEqual<Purchased>>>),
-		typeof(CmpePart.partcd),
-		typeof(CmpePart.description),SubstituteKey = typeof(CmpePart.partcd))] //change this to partcd
+		[PXSelector(typeof(Search<CmpePart.partID, Where<CmpePart.type.IsEqual<Purchased>>>),
+		typeof(CmpePart.partCD),
+		typeof(CmpePart.description),SubstituteKey = typeof(CmpePart.partCD))]
 		public virtual int? PartID { get; set; }
 		public abstract class partID : PX.Data.BQL.BqlInt.Field<partID> { }
 		#endregion
@@ -68,7 +68,7 @@ namespace PX.Objects.DC.DAC
 		#region QuantityInHand
 		[PXInt]
 		[PXUIField(Visible = false)]
-		[PXUnboundDefault(typeof(Search<CmpeInventoryAllocation.quantityinhand, Where<CmpeInventoryAllocation.partid,Equal<Current<partID>>>>))]
+		[PXUnboundDefault(typeof(Search<CmpeInventoryAllocation.quantityInHand, Where<CmpeInventoryAllocation.partID,Equal<Current<partID>>>>))]
 		public virtual int? QuantityInHand { get; set; }
 		public abstract class quantityInHand : PX.Data.BQL.BqlInt.Field<quantityInHand> { }
 		#endregion

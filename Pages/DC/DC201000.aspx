@@ -15,7 +15,7 @@
     <px:PXFormView ID="form" runat="server" DataSourceID="ds" DataMember="Parts" Width="100%" AllowAutoHide="false">
         <Template>
             <px:PXLayoutRule LabelsWidth="S" ControlSize="M" ID="PXLayoutRule1" runat="server" StartRow="True"></px:PXLayoutRule>
-            <px:PXMaskEdit runat="server" ID="CstPXMaskEdit2" DataField="Partcd"></px:PXMaskEdit>
+            <px:PXMaskEdit runat="server" ID="CstPXMaskEdit2" DataField="PartCD" CommitChanges="true"></px:PXMaskEdit>
             <px:PXTextEdit runat="server" ID="CstPXTextEdit1" DataField="Description"></px:PXTextEdit>
             <px:PXLayoutRule runat="server" ID="PXLayoutRule2" StartColumn="True" LabelsWidth="S" ControlSize="M" />
             <px:PXDropDown runat="server" ID="CstPXDropDown3" DataField="ItemType" CommitChanges="true"></px:PXDropDown>

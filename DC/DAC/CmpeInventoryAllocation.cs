@@ -11,7 +11,7 @@ namespace PX.Objects.DC.DAC
 	public class CmpeInventoryAllocation : IBqlTable
 	{
 		#region Keys
-		public class PK : PrimaryKeyOf<CmpeInventoryAllocation>.By<partid>
+		public class PK : PrimaryKeyOf<CmpeInventoryAllocation>.By<partID>
 		{
 			public static CmpeInventoryAllocation Find(PXGraph graph, int? partId) => FindBy(graph, partId);
 		}
@@ -19,41 +19,41 @@ namespace PX.Objects.DC.DAC
 
 		#region InventoryAllocationID
 		[PXDBIdentity]
-		public virtual int? Inventoryallocationid { get; set; }
-		public abstract class inventoryallocationid : PX.Data.BQL.BqlInt.Field<inventoryallocationid> { }
+		public virtual int? InventoryAllocationID { get; set; }
+		public abstract class inventoryAllocationID : PX.Data.BQL.BqlInt.Field<inventoryAllocationID> { }
 		#endregion
 
 		#region PartID
 		[PXDBInt(IsKey=true)]
-		[PXSelector(typeof(Search<CmpePart.partid>),
-		typeof(CmpePart.partid),
-		typeof(CmpePart.partcd),
-		SubstituteKey = typeof(CmpePart.partcd))]
+		[PXSelector(typeof(Search<CmpePart.partID>),
+		typeof(CmpePart.partID),
+		typeof(CmpePart.partCD),
+		SubstituteKey = typeof(CmpePart.partCD))]
 		[PXUIField(DisplayName = "Part")]
 		public virtual int? PartID { get; set; }
-		public abstract class partid : PX.Data.BQL.BqlInt.Field<partid> { }
+		public abstract class partID : PX.Data.BQL.BqlInt.Field<partID> { }
 		#endregion
 
 		#region AvailableForSale
 		[PXDBInt]
-		[PXFormula(typeof(Sub<quantityinhand, reservedquantity>))]
+		[PXFormula(typeof(Sub<quantityInHand, reservedQuantity>))]
 		[PXUIField(DisplayName = "Available for Sale")]
-		public virtual int? Availableforsale { get; set; }
-		public abstract class availableforsale : PX.Data.BQL.BqlInt.Field<availableforsale> { }
+		public virtual int? AvailableForSale { get; set; }
+		public abstract class availableForSale : PX.Data.BQL.BqlInt.Field<availableForSale> { }
 		#endregion
 
 		#region ReservedQuantity
 		[PXDBInt]
 		[PXUIField(DisplayName = "Reserved Quantity")]
-		public virtual int? Reservedquantity { get; set; }
-		public abstract class reservedquantity : PX.Data.BQL.BqlInt.Field<reservedquantity> { }
+		public virtual int? ReservedQuantity { get; set; }
+		public abstract class reservedQuantity : PX.Data.BQL.BqlInt.Field<reservedQuantity> { }
 		#endregion
 
 		#region QuantityInHand
 		[PXDBInt]
 		[PXUIField(DisplayName = "Quantity in Hand")]
-		public virtual int? Quantityinhand { get; set; }
-		public abstract class quantityinhand : PX.Data.BQL.BqlInt.Field<quantityinhand> { }
+		public virtual int? QuantityInHand { get; set; }
+		public abstract class quantityInHand : PX.Data.BQL.BqlInt.Field<quantityInHand> { }
 		#endregion
 
 		#region CreatedDateTime

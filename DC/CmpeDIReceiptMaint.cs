@@ -12,9 +12,9 @@ namespace PX.Objects.DC
 
 		#region Actions
 		public PXAction<CmpeInventoryStatus> DirectInventoryReceipts;
-		[PXButton(OnClosingPopup = PXSpecialButtonType.Refresh)]
 		[PXUIField(DisplayName = "Direct Inventory Receipts", Enabled = true)]
-
+		[PXButton(OnClosingPopup = PXSpecialButtonType.Refresh)]
+	
 		public virtual void directInventoryReceipts()
 		{
 			var dialogBoxGraph = CreateInstance<CmpeDirectInventoryReceiptMaint>();

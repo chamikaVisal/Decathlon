@@ -42,11 +42,6 @@ namespace PX.Objects.DC.Workflows
 		{
 			var context = config.GetScreenConfigurationContext<CmpeProductionOrderMaint, CmpeProductionOrder>();
 
-			//#region Categories
-			//var commonCategories = CommonActionCategories.Get(context);
-			//var processingCategory = commonCategories.Processing;
-			//#endregion
-
 			context.AddScreenConfigurationFor(screen =>
 			{
 				return screen

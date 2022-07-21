@@ -25,10 +25,10 @@ namespace PX.Objects.DC.DAC
 
 		#region PartID
 		[PXDBInt(IsKey = true)]
-		[PXSelector(typeof(Search<CmpePart.partid, Where<CmpePart.itemtype.IsEqual<Stock>>>),
-		typeof(CmpePart.partcd),
+		[PXSelector(typeof(Search<CmpePart.partID, Where<CmpePart.itemType.IsEqual<Stock>>>),
+		typeof(CmpePart.partCD),
 		typeof(CmpePart.description),
-		SubstituteKey = typeof(CmpePart.partcd))]
+		SubstituteKey = typeof(CmpePart.partCD))]
 		public virtual int? PartID { get; set; }
 		public abstract class partID : BqlInt.Field<partID> { }
 		#endregion

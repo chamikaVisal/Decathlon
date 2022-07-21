@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PX.Objects.DC.Descriptor
 {
-	[PX.Common.PXLocalizable()]
+	[PX.Common.PXLocalizable()]//Explain this
 	public class Messages
 	{
 		public const string Manufactured = "Manufactured";

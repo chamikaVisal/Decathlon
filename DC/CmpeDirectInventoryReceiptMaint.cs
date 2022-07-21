@@ -21,28 +21,28 @@ namespace PX.Objects.DC
 
 		public virtual void releaseReceipt()
 		{
-			CmpeInventoryStatus newinventorystatus = new CmpeInventoryStatus();
+			CmpeInventoryStatus newinventorystatus = new CmpeInventoryStatus();;
 
-			newinventorystatus.PartID = Document.Current.Partid;
+			newinventorystatus.PartID = Document.Current.PartID;
 			newinventorystatus.WarehouseID = Document.Current.WarehouseID;
-			newinventorystatus.LocationID = Document.Current.Locationid;
+			newinventorystatus.LocationID = Document.Current.LocationID;
 
 			CmpeInventoryStatus check = CheckExistingInventory();
 
 			CmpeInventoryAllocation newallocation = new CmpeInventoryAllocation();
 
-			newallocation.PartID = Document.Current.Partid;
+			newallocation.PartID = Document.Current.PartID;
 
 			CmpeInventoryAllocation checkallocation = CheckExistingallocation();
 
 			CmpeInventoryStatus NewqtyInHand = PXSelectGroupBy<CmpeInventoryStatus,
-			Where<CmpeInventoryStatus.partid, Equal<Required<CmpeDirectInventoryReceipt.partid>>>,
-			Aggregate<GroupBy<CmpeInventoryStatus.partid, Sum<CmpeInventoryStatus.quantity>>>>.Select(this, Document.Current.Partid);
+			Where<CmpeInventoryStatus.partID, Equal<Required<CmpeDirectInventoryReceipt.partID>>>,
+			Aggregate<GroupBy<CmpeInventoryStatus.partID, Sum<CmpeInventoryStatus.quantity>>>>.Select(this, Document.Current.PartID);
 
 			if (check == null)
 			{
 				newinventorystatus.Quantity = Document.Current.Quantity;
-				InventoryStatus.Insert(newinventorystatus);	
+				InventoryStatus.Insert(newinventorystatus);
 
 			}
 			else
@@ -52,22 +52,20 @@ namespace PX.Objects.DC
 			}
 
 			if (checkallocation == null)
-			{	
-				newallocation.Quantityinhand = Document.Current.Quantity;
+			{
+				newallocation.QuantityInHand = Document.Current.Quantity;
 				InventoryAllocationDetails.Insert(newallocation);
 			}
 			else
 			{
-				newallocation.Quantityinhand = (int?)(Document.Current.Quantity + NewqtyInHand.Quantity);
-				newallocation.Availableforsale = 0;
-				newallocation.Reservedquantity = 0;
+				newallocation.QuantityInHand = (int?)(Document.Current.Quantity + NewqtyInHand.Quantity);
+				newallocation.AvailableForSale = 0;
+				newallocation.ReservedQuantity = 0;
 				InventoryAllocationDetails.Update(newallocation);
 			}
-			CmpeDirectInventoryReceipt current = new CmpeDirectInventoryReceipt();
-			current = Document.Current;
-
-			current.ReleasedStatus = true;
-			Document.Update(current);
+			
+			Document.Current.ReleasedStatus = true;
+			Document.UpdateCurrent();
 			Actions.PressSave();
 		}
 		#endregion
@@ -75,9 +73,9 @@ namespace PX.Objects.DC
 		#region Event Handlers
 		protected virtual void _(Events.RowSelected<CmpeDirectInventoryReceipt> e)
 		{
-			CmpeDirectInventoryReceipt row = e.Row;
+			CmpeDirectInventoryReceipt row = e.Row; 
 
-			if (Document.Current.ReleasedStatus == true)
+			if (row.ReleasedStatus == true)
 			{
 				ReleaseReceipt.SetEnabled(false);
 			}
@@ -88,18 +86,19 @@ namespace PX.Objects.DC
 		#region Methods
 		private CmpeInventoryStatus CheckExistingInventory()
 		{
-			CmpeInventoryStatus newstatus = CmpeInventoryStatus.PK.Find(this, Document.Current.Partid, Document.Current.WarehouseID, Document.Current.Locationid);
+			CmpeInventoryStatus newstatus = CmpeInventoryStatus.PK.Find(this, Document.Current.PartID, Document.Current.WarehouseID, Document.Current.LocationID);
 
 			return newstatus;
 		}
 
 		private CmpeInventoryAllocation CheckExistingallocation()
 		{
-			CmpeInventoryAllocation newallocation = CmpeInventoryAllocation.PK.Find(this, Document.Current.Partid);
+			CmpeInventoryAllocation newallocation = CmpeInventoryAllocation.PK.Find(this, Document.Current.PartID);
 
 			return newallocation;
 		}
 		#endregion
 
 	}
+
 }

@@ -55,11 +55,6 @@ namespace PX.Objects.DC
 				productionordermaint.ReduceStock(bomItems);
 			});
 
-			//CmpeProductionOrder prod = OrderDetails.Current;
-			//prod.ProductionOrderStatus = ProductionOrderStatuses.Reserved;
-			//OrderDetails.Update(prod);
-			Save.Press();
-
 			return adapter.Get();
 		}
 		
@@ -85,7 +80,6 @@ namespace PX.Objects.DC
 					dialogBoxGraph.Document.UpdateCurrent();
 
 					dialogBoxGraph.OrderDetails.Current = OrderDetails.Current;
-					//dialogBoxGraph.OrderDetails.Current.ProductionOrderStatus = ProductionOrderStatuses.Closed;
 
 					throw new PXPopupRedirectException(dialogBoxGraph, "Receive Shop Order");
 				}
@@ -97,35 +91,23 @@ namespace PX.Objects.DC
 				grp.OrderDetails.View.RequestRefresh();
 			}
 		
-
 			return adapter.Get();
 		}
 		#endregion
 
 		#region Events
 
-		//protected virtual void _(Events.RowPersisting<CmpeProductionOrder> e)
-		//{
-		//	CmpeProductionOrder row = e.Row;
-
-		//	if (row.ProductionOrderStatus == ProductionOrderStatuses.Not_Set)
-		//	{
-		//		row.ProductionOrderStatus = ProductionOrderStatuses.Released;
-		//		OrderDetails.Update(row);
-		//	}
-		//}
 
 		protected virtual void _(Events.FieldUpdated<CmpeProductionOrder,CmpeProductionOrder.lotSize> e)
 		{
 			foreach (CmpeProductStructure item in BOMDetails.Select())
 			{
-				//item.TotalQuantity = e.Row.LotSize * item.Quantity;
 				CmpeProductStructure copy = (CmpeProductStructure)BOMDetails.Cache.CreateCopy(item);
-				object TotalQuantity = e.Row.LotSize * copy.Quantity;
+				object totalQuantity = e.Row.LotSize * copy.Quantity;
 
-				BOMDetails.Cache.RaiseFieldUpdating<CmpeProductStructure.totalQuantity>(copy, ref TotalQuantity);
+				BOMDetails.Cache.RaiseFieldUpdating<CmpeProductStructure.totalQuantity>(copy, ref totalQuantity);
 
-				copy.TotalQuantity = (int)TotalQuantity;
+				copy.TotalQuantity = (int)totalQuantity;
 				BOMDetails.Update(copy);
 			}
 
@@ -136,16 +118,14 @@ namespace PX.Objects.DC
 		{
 
 			CmpeInventoryAllocation inventoryitem = PXSelect<CmpeInventoryAllocation,
-				Where<CmpeInventoryAllocation.partid, Equal<Required<CmpeProductStructure.partID
+				Where<CmpeInventoryAllocation.partID, Equal<Required<CmpeProductStructure.partID
 					>>>>.Select(this, e.Row.PartID);
 
-			if (e.Row.TotalQuantity > inventoryitem.Quantityinhand)
+			if (e.Row.TotalQuantity > inventoryitem.QuantityInHand)
 			{
 				BOMDetails.Cache.RaiseExceptionHandling("TotalQuantity", e.Row, e.Row.TotalQuantity, new PXException(Messages.NoQuantity, typeof(CmpeProductStructure.quantity)));
-				// Acuminator disable once PX1070 UiPresentationLogicInEventHandlers [Justification]
-				Save.SetEnabled(false);
 			}
-			else if (inventoryitem.Quantityinhand == null)
+			else if (inventoryitem.QuantityInHand == null)
 			{
 				BOMDetails.Cache.RaiseExceptionHandling("TotalQuantity", e.Row, e.Row.TotalQuantity, new PXException(Messages.QuantityNotFound));
 			}
@@ -181,36 +161,10 @@ namespace PX.Objects.DC
 			{
 				PXUIFieldAttribute.SetVisible<CmpeProductionOrder.lotSize>(e.Cache, e.Row, row.ProductNumber.HasValue);
 			}
-
-			//if (row.ProductionOrderStatus.Trim() == ProductionOrderStatuses.Released)
-			//{
-			//	IssueMaterial.SetEnabled(true);
-			//	ReceiveShopOrder.SetEnabled(false);
-			//}
-			//if (row.ProductionOrderStatus.Trim() == ProductionOrderStatuses.Not_Set || OrderDetails.Current.ProductionOrderStatus == ProductionOrderStatuses.Not_Set)
-			//{
-			//	IssueMaterial.SetEnabled(false);
-			//	ReceiveShopOrder.SetEnabled(false);
-			//}
 			if (row.ProductionOrderStatus.Trim() == ProductionOrderStatuses.Reserved || row.ProductionOrderStatus.Trim() == ProductionOrderStatuses.Closed)
 			{
-				//IssueMaterial.SetEnabled(false);
-				//ReceiveShopOrder.SetEnabled(true);
 				Delete.SetEnabled(false);
 			}
-			//if (row.ProductionOrderStatus.Trim() == ProductionOrderStatuses.Closed || OrderDetails.Current.ProductionOrderStatus == ProductionOrderStatuses.Closed)
-			//{
-			//	IssueMaterial.SetEnabled(false);
-			//	ReceiveShopOrder.SetEnabled(false);
-			//	Delete.SetEnabled(false);
-
-			//	PXUIFieldAttribute.SetEnabled<CmpeProductionOrder.orderID>(e.Cache, row, false);
-			//	PXUIFieldAttribute.SetEnabled<CmpeProductionOrder.productionOrderDate>(e.Cache, row, false);
-			//	PXUIFieldAttribute.SetEnabled<CmpeProductionOrder.requestedDate>(e.Cache, row, false);
-			//	PXUIFieldAttribute.SetEnabled<CmpeProductionOrder.productNumber>(e.Cache, row, false);
-			//	PXUIFieldAttribute.SetEnabled<CmpeProductionOrder.lotSize>(e.Cache, row, false);
-			//}
-
 		}
 		#endregion
 
@@ -224,17 +178,12 @@ namespace PX.Objects.DC
 			{
 				foreach (CmpeProductStructure bomitem in productStructure)
 				{
-					/*
-					 * 1. select current bom item (CmpeProductStructure) Ex : PartID = 1
-					 * 2. check for the quantity in hand for the bom item (CmpeInventoryAllocation) Ex : ParID = 1, QuantityInhand = 50
-					 * 3. check for all the locations corresponding to the part selected in step 1 (CmpeInventoryStatus)
-					 */
 					CmpeInventoryAllocation inventoryitem = PXSelect<CmpeInventoryAllocation,
-					Where<CmpeInventoryAllocation.partid, Equal<Required<CmpeProductStructure.partID
-						>>>>.Select(this, bomitem.PartID); // results the row which has the summarized amount for the part in the product structure selected
+					Where<CmpeInventoryAllocation.partID, Equal<Required<CmpeProductStructure.partID
+						>>>>.Select(this, bomitem.PartID);
 
 					PXResultset<CmpeInventoryStatus> locations = PXSelect<CmpeInventoryStatus,
-					Where<CmpeInventoryStatus.partid, Equal<Required<CmpeProductStructure.partID>>>, OrderBy<Desc<CmpeInventoryStatus.quantity>>
+					Where<CmpeInventoryStatus.partID, Equal<Required<CmpeProductStructure.partID>>>, OrderBy<Desc<CmpeInventoryStatus.quantity>>
 					>.Select(this, bomitem.PartID);
 
 
@@ -242,8 +191,8 @@ namespace PX.Objects.DC
 					{
 						if ((int)location.Quantity >= bomitem.TotalQuantity)
 						{
-							inventoryitem.Quantityinhand -= bomitem.TotalQuantity;
-							inventoryitem.Reservedquantity += bomitem.TotalQuantity;
+							inventoryitem.QuantityInHand -= bomitem.TotalQuantity;
+							inventoryitem.ReservedQuantity += bomitem.TotalQuantity;
 							location.Quantity -= bomitem.TotalQuantity;
 
 							InventoryAllocation.Update(inventoryitem);
@@ -256,8 +205,8 @@ namespace PX.Objects.DC
 						else if ((int)location.Quantity < bomitem.TotalQuantity)
 						{
 							location.Quantity -= location.Quantity;
-							inventoryitem.Quantityinhand -= (int)location.Quantity;
-							inventoryitem.Reservedquantity += (int)location.Quantity;
+							inventoryitem.QuantityInHand -= (int)location.Quantity;
+							inventoryitem.ReservedQuantity += (int)location.Quantity;
 
 							bomitem.TotalQuantity = (int)(bomitem.TotalQuantity - location.Quantity);
 
@@ -288,12 +237,11 @@ namespace PX.Objects.DC
 		public void SetQuantityAvailability()
 		{
 			var result = new SelectFrom<CmpeProductStructure>
-								.InnerJoin<CmpeInventoryStatus>.On<CmpeInventoryStatus.partid.IsEqual<CmpeProductStructure.partID>>
+								.InnerJoin<CmpeInventoryStatus>.On<CmpeInventoryStatus.partID.IsEqual<CmpeProductStructure.partID>>
 								.Where<CmpeProductStructure.productID.IsEqual<CmpeProductionOrder.productNumber.FromCurrent>>
-								.AggregateTo<GroupBy<CmpeInventoryStatus.partid>, Sum<CmpeInventoryStatus.quantity>>
+								.AggregateTo<GroupBy<CmpeInventoryStatus.partID>, Sum<CmpeInventoryStatus.quantity>>
 								.View.ReadOnly(this).Select()
 								.ToDictionary(e => e.GetItem<CmpeInventoryStatus>().PartID, e => e.GetItem<CmpeInventoryStatus>().Quantity);
-				//.ToDictionary(e => e.GetItem<CmpeInventoryStatus>().PartID, e => e.GetItem<CmpeInventoryStatus>().Quantity - e.GetItem<CmpeInventoryStatus>().reserved);
 
 			foreach (CmpeProductStructure item in BOMDetails.Select())
 			{

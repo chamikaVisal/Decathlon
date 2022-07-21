@@ -31,7 +31,7 @@ namespace PX.Objects.DC
 			}
 		}
 
-		protected virtual void _(Events.FieldUpdated<CmpePart, CmpePart.itemtype> e)
+		protected virtual void _(Events.FieldUpdated<CmpePart, CmpePart.itemType> e)
 		{
 			CmpePart row = e.Row;
 

@@ -11,8 +11,8 @@ namespace PX.Objects.DC
 		public SelectFrom<CmpeWarehouse>.View WarehouseDetails;
 
 		public SelectFrom<CmpeLocation>.
-			Where<CmpeLocation.warehouseid.
-				IsEqual<CmpeWarehouse.warehouseid.FromCurrent>>.View LocationDetails;
+			Where<CmpeLocation.warehouseID.
+				IsEqual<CmpeWarehouse.warehouseID.FromCurrent>>.View LocationDetails;
 
 		protected virtual void _(Events.RowInserting<CmpeLocation> e)
 		{

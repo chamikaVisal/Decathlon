@@ -8,27 +8,27 @@ namespace PX.Objects.DC.DAC
 	{
 		#region WarehouseID
 		[PXDBIdentity]
-		public virtual int? Warehouseid { get; set; }
-		public abstract class warehouseid : PX.Data.BQL.BqlInt.Field<warehouseid> { }
+		public virtual int? WarehouseID { get; set; }
+		public abstract class warehouseID : PX.Data.BQL.BqlInt.Field<warehouseID> { }
 		#endregion
 
 		#region WarehouseCD
 		[PXDBString(50, IsUnicode = true, InputMask = ">aaaaaaaaaaaaaaa", IsKey = true)]
 		[PXDefault]
 		[PXUIField(DisplayName = "Warehouse Name")]
-		[PXSelector(typeof(Search<warehousecd>),
-			typeof(warehousecd),
-			typeof(warehousedescription),
-			SubstituteKey = typeof(warehousecd))]
-		public virtual string Warehousecd { get; set; }
-		public abstract class warehousecd : PX.Data.BQL.BqlString.Field<warehousecd> { }
+		[PXSelector(typeof(Search<warehouseCD>),
+			typeof(warehouseCD),
+			typeof(warehouseDescription),
+			SubstituteKey = typeof(warehouseCD))]
+		public virtual string WarehouseCD { get; set; }
+		public abstract class warehouseCD : PX.Data.BQL.BqlString.Field<warehouseCD> { }
 		#endregion
 
 		#region WarehouseDescription
 		[PXDBString(200, IsUnicode = true, InputMask = "")]
 		[PXUIField(DisplayName = "Description")]
-		public virtual string Warehousedescription { get; set; }
-		public abstract class warehousedescription : PX.Data.BQL.BqlString.Field<warehousedescription> { }
+		public virtual string WarehouseDescription { get; set; }
+		public abstract class warehouseDescription : PX.Data.BQL.BqlString.Field<warehouseDescription> { }
 		#endregion
 
 		#region CreatedDateTime

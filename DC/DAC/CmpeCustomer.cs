@@ -9,27 +9,28 @@ namespace PX.Objects.DC.DAC
 	public class CmpeCustomer : IBqlTable
 	{
 		#region Keys
-		public class PK : PrimaryKeyOf<CmpeCustomer>.By<customerid>
+		public class PK : PrimaryKeyOf<CmpeCustomer>.By<customerID>
 		{
 			public static CmpeCustomer Find(PXGraph graph, int? customerid) => FindBy(graph, customerid);
 		}
 		#endregion
+
 		#region CustomerID
 		[PXDBIdentity]
-		public virtual int? Customerid { get; set; }
-		public abstract class customerid : PX.Data.BQL.BqlInt.Field<customerid> { }
+		public virtual int? CustomerID { get; set; }
+		public abstract class customerID : PX.Data.BQL.BqlInt.Field<customerID> { }
 		#endregion
 
 		#region CustomerName
-		[PXDBString(50, IsUnicode = true, InputMask = "", IsKey = true)]
+		[PXDBString(50, IsKey = true)]
 		[PXDefault]
 		[PXUIField(DisplayName = "Customer Name")]
-		public virtual string Customername { get; set; }
-		public abstract class customername : PX.Data.BQL.BqlString.Field<customername> { }
+		public virtual string CustomerName { get; set; }
+		public abstract class customerName : PX.Data.BQL.BqlString.Field<customerName> { }
 		#endregion
 
 		#region Address
-		[PXDBString(200, IsUnicode = true, InputMask = "")]
+		[PXDBString(200)]
 		[PXUIField(DisplayName = "Address")]
 		public virtual string Address { get; set; }
 		public abstract class address : PX.Data.BQL.BqlString.Field<address> { }

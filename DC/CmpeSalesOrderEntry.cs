@@ -70,7 +70,7 @@ namespace PX.Objects.DC
 		{
 			if (CustomerOrderDetails.Current.Status.Trim() == CustomerOrderStatus.COReleased)
 			{
-				ChangeStatus_Delivered();
+				ChangeStatusDelivered();
 			}
 		}
 
@@ -86,7 +86,6 @@ namespace PX.Objects.DC
 
 			CmpePart part = CmpePart.PK.Find(this, row.PartID);
 
-			row.PartDescription = part.Description;
 			row.Price = part.Price;
 		}
 
@@ -98,7 +97,6 @@ namespace PX.Objects.DC
 
 			CmpePart part = CmpePart.PK.Find(this, row.NoPartID);
 
-			row.PartDescription = part.Description;
 			row.Price = part.Price;
 		}
 
@@ -183,30 +181,28 @@ namespace PX.Objects.DC
 			if (row != null)
 			{
 				CmpeInventoryAllocation inventoryitem = PXSelect<CmpeInventoryAllocation,
-				Where<CmpeInventoryAllocation.partid, Equal<Required<CmpeCustomerOrderPartDetails.partID
+				Where<CmpeInventoryAllocation.partID, Equal<Required<CmpeCustomerOrderPartDetails.partID
 					>>>>.Select(this, row.PartID);
 
-				if (row.Qty > inventoryitem.Availableforsale)
+				if (row.Qty > inventoryitem.AvailableForSale)
 				{
 					e.Cache.RaiseExceptionHandling<CmpeCustomerOrderPartDetails.qty>(row, row.Qty, new PXException(Messages.NoSufficientQtyMessage));
-					// Acuminator disable once PX1070 UiPresentationLogicInEventHandlers [Justification]
-					Save.SetEnabled(false);
 				}
 			}
 		}
 		#endregion
 
-		public void ChangeStatus_Delivered()
+		public void ChangeStatusDelivered()
 		{
 			foreach (CmpeCustomerOrderPartDetails item in CustomerOrderPartDetails.Select())
 			{
 				CmpeInventoryAllocation inventoryitem = PXSelect<CmpeInventoryAllocation,
-				Where<CmpeInventoryAllocation.partid, Equal<Required<CmpeCustomerOrderPartDetails.partID
-					>>>>.Select(this, item.PartID); // corresponding allococation object with qin and afs
+				Where<CmpeInventoryAllocation.partID, Equal<Required<CmpeCustomerOrderPartDetails.partID
+					>>>>.Select(this, item.PartID);
 
 				PXResultset<CmpeInventoryStatus> inventory = PXSelect<CmpeInventoryStatus,
-				Where<CmpeInventoryStatus.partid, Equal<Required<CmpeCustomerOrderPartDetails.partID>>>, OrderBy<Desc<CmpeInventoryStatus.quantity>>
-				>.Select(this, item.PartID); // results a set of records in inventory which matches wth pard id from above
+				Where<CmpeInventoryStatus.partID, Equal<Required<CmpeCustomerOrderPartDetails.partID>>>, OrderBy<Desc<CmpeInventoryStatus.quantity>>
+				>.Select(this, item.PartID);
 				UpdateQuantities(item, inventoryitem, inventory);
 
 				item.Status = CustomerOrderItemDetailsStatus.COItemDelivered;
@@ -217,12 +213,12 @@ namespace PX.Objects.DC
 
 		private void UpdateQuantities(CmpeCustomerOrderPartDetails item, CmpeInventoryAllocation inventoryitem, PXResultset<CmpeInventoryStatus> inventory)
 		{
-			foreach (CmpeInventoryStatus inventoryRes in inventory) //checking each location
+			foreach (CmpeInventoryStatus inventoryRes in inventory)
 			{
 				if ((int)inventoryRes.Quantity >= item.Qty)
 				{
-					inventoryitem.Availableforsale -= (int)item.Qty;
-					inventoryitem.Quantityinhand -= (int)item.Qty;
+					inventoryitem.AvailableForSale -= (int)item.Qty;
+					inventoryitem.QuantityInHand -= (int)item.Qty;
 					inventoryRes.Quantity -= item.Qty;
 
 					InventoryAllocation.Update(inventoryitem);
@@ -235,8 +231,8 @@ namespace PX.Objects.DC
 				else if ((int)inventoryRes.Quantity < item.Qty)
 				{
 					inventoryRes.Quantity -= inventoryRes.Quantity;
-					inventoryitem.Quantityinhand -= (int)item.Qty;
-					inventoryitem.Availableforsale -= (int)item.Qty;
+					inventoryitem.QuantityInHand -= (int)item.Qty;
+					inventoryitem.AvailableForSale -= (int)item.Qty;
 
 					item.Qty = (int)(item.Qty - inventoryRes.Quantity);
 

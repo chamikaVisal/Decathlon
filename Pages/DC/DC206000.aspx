@@ -20,9 +20,6 @@
             <px:PXSelector runat="server" ID="CstPXSelector1" DataField="WarehouseID" AutoRefresh="true" CommitChanges="true"></px:PXSelector>
             <px:PXSelector runat="server" ID="CstPXSelector4" DataField="LocationID" AutoRefresh="true" CommitChanges="true"></px:PXSelector>
             <px:PXLayoutRule ControlSize="M" LabelsWidth="M" ID="PXLayoutRule2" runat="server" StartColumn="True"></px:PXLayoutRule>
-            <%--<px:PXNumberEdit runat="server" ID="PXNumberEdit3" DataField="Qty"  CommitChanges="true" AutoRefresh ="true"></px:PXNumberEdit>--%>
-          <%--  <px:PXNumberEdit runat="server" ID="PXNumberEdit2" DataField="Price" CommitChanges="true" AutoRefresh ="true"></px:PXNumberEdit>
-            <px:PXNumberEdit runat="server" ID="PXNumberEdit1" DataField="TotalPrice" CommitChanges="true" AutoRefresh ="true"  ></px:PXNumberEdit>--%>
         </Template>
     </px:PXFormView>
    
@@ -36,16 +33,13 @@
                         <Levels>
                             <px:PXGridLevel DataMember="INStatusRecords">
                                 <Columns>
-                                     <px:PXGridColumn DataField="Inventorystatusid" Width="280"></px:PXGridColumn>
-                                    <px:PXGridColumn DataField="Partid" Width="280"></px:PXGridColumn>
+                                     <px:PXGridColumn DataField="InventoryStatusID" Width="280"></px:PXGridColumn>
+                                    <px:PXGridColumn DataField="PartID" Width="280"></px:PXGridColumn>
                                     <px:PXGridColumn DataField="WarehouseID" Width="70"></px:PXGridColumn>
                                     <px:PXGridColumn DataField="LocationID" Width="280"></px:PXGridColumn>
                                     <px:PXGridColumn DataField="Quantity" DataType="Decimal"></px:PXGridColumn>
-                                    <%--<px:PXGridColumn CommitChanges="True" DataField="LocationName" Width="280" ></px:PXGridColumn>--%>
                                 </Columns>
-                                <%--<RowTemplate>
-									<px:PXSegmentMask runat="server" ID="CstPXSegmentMask6" DataField="InventoryID" AutoRefresh="True" ></px:PXSegmentMask>
-								</RowTemplate>--%>
+                              
                             </px:PXGridLevel>
                         </Levels>
                         <AutoSize Enabled="True"></AutoSize>

@@ -12,6 +12,6 @@ namespace PX.Objects.DC
 
 		public SelectFrom<CmpeProductStructure>.
 			Where<CmpeProductStructure.productID.
-				IsEqual<CmpePart.partid.FromCurrent>>.View PartDetails;
+				IsEqual<CmpePart.partID.FromCurrent>>.View PartDetails;
 	}
 }

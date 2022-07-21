@@ -11,47 +11,47 @@ namespace PX.Objects.DC
 	{
 		#region InventoryID
 		[PXDBIdentity]
-		public virtual int? Inventoryid { get; set; }
-		public abstract class inventoryid : PX.Data.BQL.BqlInt.Field<inventoryid> { }
+		public virtual int? InventoryID { get; set; }
+		public abstract class inventoryID : PX.Data.BQL.BqlInt.Field<inventoryID> { }
 		#endregion
 
 		#region PartID
 		[PXDBInt]
-		[PXSelector(typeof(Search<CmpePart.partid>),
-		typeof(CmpePart.partid),
-		typeof(CmpePart.partcd),
-		SubstituteKey = typeof(CmpePart.partcd))]
+		[PXSelector(typeof(Search<CmpePart.partID>),
+		typeof(CmpePart.partID),
+		typeof(CmpePart.partCD),
+		SubstituteKey = typeof(CmpePart.partCD))]
 		[PXUIField(DisplayName = "Part")]
 		public virtual int? PartID { get; set; }
-		public abstract class partid : PX.Data.BQL.BqlInt.Field<partid> { }
+		public abstract class partID : PX.Data.BQL.BqlInt.Field<partID> { }
 		#endregion
 
 		#region WarehouseID
 		[PXDBInt]
-		[PXSelector(typeof(Search<CmpeWarehouse.warehouseid>),
-		typeof(CmpeWarehouse.warehousecd),
-		typeof(CmpeWarehouse.warehousedescription),
-		SubstituteKey = typeof(CmpeWarehouse.warehousecd))]
+		[PXSelector(typeof(Search<CmpeWarehouse.warehouseID>),
+		typeof(CmpeWarehouse.warehouseCD),
+		typeof(CmpeWarehouse.warehouseDescription),
+		SubstituteKey = typeof(CmpeWarehouse.warehouseCD))]
 		[PXUIField(DisplayName = "Warehouse")]
 		public virtual int? WarehouseID { get; set; }
-		public abstract class warehouseid : PX.Data.BQL.BqlInt.Field<warehouseid> { }
+		public abstract class warehouseID : PX.Data.BQL.BqlInt.Field<warehouseID> { }
 		#endregion
 
 		#region LocationID
 		[PXDBInt]
 		[PXSelector(typeof(Search<CmpeLocation.locationID,
-							Where<CmpeLocation.warehouseid,
-							Equal<Current<warehouseid>>>>),
+							Where<CmpeLocation.warehouseID,
+							Equal<Current<warehouseID>>>>),
 			typeof(CmpeLocation.locationID),
 			typeof(CmpeLocation.locationCD),
 			SubstituteKey = typeof(CmpeLocation.locationCD))]
 		[PXUIField(DisplayName = "Location")]
 		public virtual int? LocationID { get; set; }
-		public abstract class locationid : PX.Data.BQL.BqlInt.Field<locationid> { }
-        #endregion
+		public abstract class locationID : PX.Data.BQL.BqlInt.Field<locationID> { }
+		#endregion
 
-        #region Price
-        [PXDBInt]
+		#region Price
+		[PXDBInt]
         [PXUIField(DisplayName = "Price")]
         public virtual int? Price { get; set; }
         public abstract class price : PX.Data.BQL.BqlString.Field<price> { }

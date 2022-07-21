@@ -23,33 +23,33 @@ namespace PX.Objects.DC.DAC
 		#region ProductID
 		[PXDBInt]
 		[PXUIField(DisplayName = "Product")]
-		[PXSelector(typeof(Search<CmpePart.partid, Where<CmpePart.partid.IsEqual<productID.FromCurrent>>>),
-		typeof(CmpePart.partcd),
-		typeof(CmpePart.description), SubstituteKey = typeof(CmpePart.partcd))]
+		[PXSelector(typeof(Search<CmpePart.partID, Where<CmpePart.partID.IsEqual<productID.FromCurrent>>>),
+		typeof(CmpePart.partCD),
+		typeof(CmpePart.description), SubstituteKey = typeof(CmpePart.partCD))]
 		public virtual int? ProductID { get; set; }
 		public abstract class productID : PX.Data.BQL.BqlInt.Field<productID> { }
 		#endregion
 
 		#region WarehouseID
 		[PXDBInt]
-		[PXSelector(typeof(Search<CmpeWarehouse.warehouseid>),
-			typeof(CmpeWarehouse.warehousecd),
-			typeof(CmpeWarehouse.warehousedescription),
-			SubstituteKey = typeof(CmpeWarehouse.warehousecd))]
+		[PXSelector(typeof(Search<CmpeWarehouse.warehouseID>),
+			typeof(CmpeWarehouse.warehouseCD),
+			typeof(CmpeWarehouse.warehouseDescription),
+			SubstituteKey = typeof(CmpeWarehouse.warehouseCD))]
 		[PXUIField(DisplayName = "Warehouse")]
 		public virtual int? WarehouseID { get; set; }
-		public abstract class warehouseid : PX.Data.BQL.BqlInt.Field<warehouseid> { }
+		public abstract class warehouseID : PX.Data.BQL.BqlInt.Field<warehouseID> { }//Not consistent
 		#endregion
 
 		#region LocationID
 		[PXDBInt]
-		[PXSelector(typeof(Search<CmpeLocation.locationID, Where<CmpeLocation.warehouseid, Equal<Current<warehouseid>>>>),
+		[PXSelector(typeof(Search<CmpeLocation.locationID, Where<CmpeLocation.warehouseID, Equal<Current<warehouseID>>>>),
 			typeof(CmpeLocation.locationID),
 			typeof(CmpeLocation.locationCD),
 			SubstituteKey = typeof(CmpeLocation.locationCD))]
 		[PXUIField(DisplayName = "Location")]
 		public virtual int? LocationID { get; set; }
-		public abstract class locationid : PX.Data.BQL.BqlInt.Field<locationid> { }
+		public abstract class locationID : PX.Data.BQL.BqlInt.Field<locationID> { }//Not consistent
 		#endregion
 
 		#region Quantity

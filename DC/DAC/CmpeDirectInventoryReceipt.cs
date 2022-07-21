@@ -9,36 +9,35 @@ namespace PX.Objects.DC.DAC
 	{
 		#region DIReceiptID
 		[PXDBIdentity(IsKey = true)]
-		[PXUIField(DisplayName = "Receipt CD")]
-		public virtual int? DIReceiptid { get; set; }
-		public abstract class direceiptid : PX.Data.BQL.BqlInt.Field<direceiptid> { }
+		[PXUIField(DisplayName = "Receipt ID")]
+		public virtual int? DIReceiptID { get; set; }
+		public abstract class dIReceiptID : PX.Data.BQL.BqlInt.Field<dIReceiptID> { }
 		#endregion
 
 		#region DIReceiptCD
-		[PXDBString(50, IsUnicode = true, InputMask = ">aaaaaaaaaaaaaaa")]
+		[PXDBString(50, InputMask = ">aaaaaaaaaaaaaaa")]
 		[PXUIField(DisplayName = "Receipt Name")]
-		//[PXDBDefault]
-		public virtual string DIReceiptcd { get; set; }
-		public abstract class direceiptcd : PX.Data.BQL.BqlString.Field<direceiptcd> { }
+		public virtual string DIReceiptCD { get; set; }
+		public abstract class dIReceiptCD : PX.Data.BQL.BqlString.Field<dIReceiptCD> { }
 		#endregion
 
 		#region PartID
 		[PXDBInt]
-		[PXSelector(typeof(Search<CmpePart.partid>),
-			typeof(CmpePart.partid),
-			typeof(CmpePart.partcd),
-			SubstituteKey = typeof(CmpePart.partcd))]
+		[PXSelector(typeof(Search<CmpePart.partID>),
+			typeof(CmpePart.partID),
+			typeof(CmpePart.partCD),
+			SubstituteKey = typeof(CmpePart.partCD))]
 		[PXUIField(DisplayName = "Part Name")]
-		public virtual int? Partid { get; set; }
-		public abstract class partid : PX.Data.BQL.BqlInt.Field<partid> { }
+		public virtual int? PartID { get; set; }
+		public abstract class partID : PX.Data.BQL.BqlInt.Field<partID> { }
 		#endregion
 
 		#region WarehouseID
 		[PXDBInt]
-		[PXSelector(typeof(Search<CmpeWarehouse.warehouseid>),
-			typeof(CmpeWarehouse.warehousecd),
-			typeof(CmpeWarehouse.warehousedescription),
-			SubstituteKey = typeof(CmpeWarehouse.warehousecd))]
+		[PXSelector(typeof(Search<CmpeWarehouse.warehouseID>),
+			typeof(CmpeWarehouse.warehouseCD),
+			typeof(CmpeWarehouse.warehouseDescription),
+			SubstituteKey = typeof(CmpeWarehouse.warehouseCD))]
 		[PXUIField(DisplayName = "Warehouse Name")]
 		public virtual int? WarehouseID { get; set; }
 		public abstract class warehouseID : PX.Data.BQL.BqlInt.Field<warehouseID> { }
@@ -47,14 +46,14 @@ namespace PX.Objects.DC.DAC
 		#region LocationID
 		[PXDBInt()]
 		[PXSelector(typeof(Search<CmpeLocation.locationID,
-							Where<CmpeLocation.warehouseid,
+							Where<CmpeLocation.warehouseID,
 							Equal<Current<warehouseID>>>>),
 			typeof(CmpeLocation.locationID),
 			typeof(CmpeLocation.locationCD),
 			SubstituteKey = typeof(CmpeLocation.locationCD))]
 		[PXUIField(DisplayName = "Location Name")]
-		public virtual int? Locationid { get; set; }
-		public abstract class locationid : PX.Data.BQL.BqlInt.Field<locationid> { }
+		public virtual int? LocationID { get; set; }
+		public abstract class locationID : PX.Data.BQL.BqlInt.Field<locationID> { }
 		#endregion
 
 		#region Quantity
@@ -120,22 +119,5 @@ namespace PX.Objects.DC.DAC
 		public abstract class noteID : PX.Data.BQL.BqlGuid.Field<noteID> { }
 		#endregion
 
-	}
-
-	public class CmpeDirectInventory : CmpeDirectInventoryReceipt
-	{
-		#region PartID
-		[PXDBInt]
-		[PXUIField(DisplayName = "Part Name")]
-		public new virtual int? Partid { get; set; }
-		public new abstract class partid : PX.Data.BQL.BqlInt.Field<partid> { }
-		#endregion
-
-		#region WarehouseID
-		[PXDBInt]
-		[PXUIField(DisplayName = "Warehouse Name")]
-		public new virtual int? WarehouseID { get; set; }
-		public new abstract class warehouseID : PX.Data.BQL.BqlInt.Field<warehouseID> { }
-		#endregion
 	}
 }

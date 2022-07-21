@@ -25,12 +25,12 @@ namespace PX.Objects.DC.DAC
 
 		#region WarehouseID
 		[PXDBInt(IsKey = true)]
-		[PXDBDefault(typeof(CmpeWarehouse.warehouseid))]
+		[PXDBDefault(typeof(CmpeWarehouse.warehouseID))]
 		[PXParent(typeof(SelectFrom<CmpeWarehouse>.
-			Where<CmpeWarehouse.warehouseid.
-			IsEqual<warehouseid.FromCurrent>>))]
-		public virtual int? WarehouseId { get; set; }
-		public abstract class warehouseid : PX.Data.BQL.BqlInt.Field<warehouseid> { }
+			Where<CmpeWarehouse.warehouseID.
+			IsEqual<warehouseID.FromCurrent>>))]
+		public virtual int? WarehouseID { get; set; }
+		public abstract class warehouseID : PX.Data.BQL.BqlInt.Field<warehouseID> { }
 		#endregion
 
 		#region Description

@@ -11,26 +11,26 @@ namespace PX.Objects.DC.DAC
 	public class CmpePart : IBqlTable
 	{
 		#region Keys
-		public class PK : PrimaryKeyOf<CmpePart>.By<partid>
+		public class PK : PrimaryKeyOf<CmpePart>.By<partID>
 		{
 			public static CmpePart Find(PXGraph graph, int? partNo) => FindBy(graph, partNo);
 		}
 		#endregion
 		#region Partid
 		[PXDBIdentity]
-		public virtual int? Partid { get; set; }
-		public abstract class partid : PX.Data.BQL.BqlInt.Field<partid> { }
+		public virtual int? PartID { get; set; }
+		public abstract class partID : PX.Data.BQL.BqlInt.Field<partID> { }
 		#endregion
 
 		#region Partcd
 		[PXDBString(50, IsUnicode = true, InputMask = ">aaaaaaaaaaaaaaa", IsKey = true)]
 		[PXDefault]
 		[PXUIField(DisplayName = "Item Name")]
-		[PXSelector(typeof(Search<partcd,Where<CmpePart.type.IsEqual<Manufactured>>>),
-		typeof(partcd),
+		[PXSelector(typeof(Search<partCD, Where<CmpePart.type.IsEqual<Manufactured>>>),
+		typeof(partCD),
 		typeof(description))]
-		public virtual string Partcd { get; set; }
-		public abstract class partcd : PX.Data.BQL.BqlString.Field<partcd> { }
+		public virtual string PartCD { get; set; }
+		public abstract class partCD : PX.Data.BQL.BqlString.Field<partCD> { }
 		#endregion
 
 		#region Description
@@ -73,7 +73,7 @@ namespace PX.Objects.DC.DAC
 			Messages.NonStock
 		})]
 		public virtual string ItemType { get; set; }
-		public abstract class itemtype : PX.Data.BQL.BqlString.Field<itemtype> { }
+		public abstract class itemType : PX.Data.BQL.BqlString.Field<itemType> { }
 		#endregion
 
 		#region Price

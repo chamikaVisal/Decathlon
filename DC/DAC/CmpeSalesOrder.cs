@@ -36,12 +36,12 @@ namespace PX.Objects.DC.DAC
 
 		#region CustomerID
 		[PXDBInt(IsKey = true)]
-		[PXDefault(typeof(CmpeCustomer.customername))]
+		[PXDefault(typeof(CmpeCustomer.customerName))]
 		[PXUIField(DisplayName = "Customer Name")]
-		[PXSelector(typeof(Search<CmpeCustomer.customerid>),
-			typeof(CmpeCustomer.customerid),
-			typeof(CmpeCustomer.customername),
-			SubstituteKey = typeof(CmpeCustomer.customername))]
+		[PXSelector(typeof(Search<CmpeCustomer.customerID>),
+			typeof(CmpeCustomer.customerID),
+			typeof(CmpeCustomer.customerName),
+			SubstituteKey = typeof(CmpeCustomer.customerName))]
 		public virtual int? CustomerID { get; set; }
 		public abstract class customerID : PX.Data.BQL.BqlInt.Field<customerID> { }
 		#endregion
@@ -50,6 +50,7 @@ namespace PX.Objects.DC.DAC
 		[PXDBString(50)]
 		[PXDefault]
 		[PXUIField(DisplayName = "Customer Address")]
+		[PXFormula(typeof(Selector<CmpeSalesOrder.customerID,CmpeCustomer.address>))]
 		public virtual string CustomerAddress { get; set; }
 		public abstract class customerAddress : PX.Data.BQL.BqlString.Field<customerAddress> { }
 		#endregion

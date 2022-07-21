@@ -11,51 +11,51 @@ namespace PX.Objects.DC.DAC
 	public class CmpeInventoryStatus : IBqlTable
 	{
 		#region Keys
-		public class PK : PrimaryKeyOf<CmpeInventoryStatus>.By<partid, warehouseid, locationid>
+		public class PK : PrimaryKeyOf<CmpeInventoryStatus>.By<partID, warehouseID, locationID>
 		{
 			public static CmpeInventoryStatus Find(PXGraph graph, int? partId, int? warehouseid, int? locationId) => FindBy(graph, partId, warehouseid, locationId);
 		}
 		#endregion
 
-		#region InventoryStatusID
+		#region InventoryStatusID 
 		[PXDBIdentity()]
-		public virtual int? Inventorystatusid { get; set; }
-		public abstract class inventorystatusid : PX.Data.BQL.BqlInt.Field<inventorystatusid> { }
+		public virtual int? InventoryStatusID { get; set; }
+		public abstract class inventoryStatusID : PX.Data.BQL.BqlInt.Field<inventoryStatusID> { }
 		#endregion
 
 		#region PartID
 		[PXDBInt(IsKey = true)]
-		[PXSelector(typeof(Search<CmpePart.partid>),
-		typeof(CmpePart.partid),
-		typeof(CmpePart.partcd),
-		SubstituteKey = typeof(CmpePart.partcd))]
+		[PXSelector(typeof(Search<CmpePart.partID>),
+		typeof(CmpePart.partID),
+		typeof(CmpePart.partCD),
+		SubstituteKey = typeof(CmpePart.partCD))]
 		[PXUIField(DisplayName = "Part")]
 		public virtual int? PartID { get; set; }
-		public abstract class partid : PX.Data.BQL.BqlInt.Field<partid> { }
+		public abstract class partID : PX.Data.BQL.BqlInt.Field<partID> { }
 		#endregion
 
 		#region WarehouseID
 		[PXDBInt(IsKey = true)]
-		[PXSelector(typeof(Search<CmpeWarehouse.warehouseid>),
-		typeof(CmpeWarehouse.warehousecd),
-		typeof(CmpeWarehouse.warehousedescription),
-		SubstituteKey = typeof(CmpeWarehouse.warehousecd))]
+		[PXSelector(typeof(Search<CmpeWarehouse.warehouseID>),
+		typeof(CmpeWarehouse.warehouseCD),
+		typeof(CmpeWarehouse.warehouseDescription),
+		SubstituteKey = typeof(CmpeWarehouse.warehouseCD))]
 		[PXUIField(DisplayName = "Warehouse")]
 		public virtual int? WarehouseID { get; set; }
-		public abstract class warehouseid : PX.Data.BQL.BqlInt.Field<warehouseid> { }
+		public abstract class warehouseID : PX.Data.BQL.BqlInt.Field<warehouseID> { }
 		#endregion
 
 		#region LocationID
 		[PXDBInt(IsKey = true)]
 		[PXSelector(typeof(Search<CmpeLocation.locationID,
-							Where<CmpeLocation.warehouseid,
-							Equal<Current<warehouseid>>>>),
-			typeof(CmpeLocation.locationID),
-			typeof(CmpeLocation.locationCD),
-			SubstituteKey = typeof(CmpeLocation.locationCD))]
+							Where<CmpeLocation.warehouseID,
+							Equal<Current<warehouseID>>>>),
+		typeof(CmpeLocation.locationID),
+		typeof(CmpeLocation.locationCD),
+		SubstituteKey = typeof(CmpeLocation.locationCD))]
 		[PXUIField(DisplayName = "Location")]
 		public virtual int? LocationID { get; set; }
-		public abstract class locationid : PX.Data.BQL.BqlInt.Field<locationid> { }
+		public abstract class locationID : PX.Data.BQL.BqlInt.Field<locationID> { }
 		#endregion
 
 		#region Quantity
@@ -74,7 +74,6 @@ namespace PX.Objects.DC.DAC
 
 		#region IsTotal
 		[PXBool]
-		[PXUIField(DisplayName = "Price")]
 		public virtual bool? IsTotal { get; set; }
 		public abstract class isTotal : PX.Data.BQL.BqlBool.Field<isTotal> { }
 		#endregion

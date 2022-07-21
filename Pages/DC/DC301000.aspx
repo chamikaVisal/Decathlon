@@ -59,7 +59,7 @@
                                 <Columns>
                                     <px:PXGridColumn CommitChanges="True" DataField="NoPartID" Width="70" ></px:PXGridColumn>
                                     <px:PXGridColumn CommitChanges="True" DataField="PartID" Width="70" ></px:PXGridColumn>
-									<px:PXGridColumn CommitChanges="True" DataField="PartDescription" Width="280" ></px:PXGridColumn>
+									<px:PXGridColumn CommitChanges="True" DataField="PartDescription" Width="280"></px:PXGridColumn>
 									<px:PXGridColumn CommitChanges="True" DataField="Qty" Width="280" ></px:PXGridColumn>
 									<px:PXGridColumn CommitChanges="True" DataField="Price" Width="280" ></px:PXGridColumn>
 									<px:PXGridColumn CommitChanges="True" DataField="TotalPrice" Width="280" ></px:PXGridColumn>

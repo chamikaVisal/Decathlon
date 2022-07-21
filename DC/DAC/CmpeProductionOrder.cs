@@ -78,10 +78,10 @@ namespace PX.Objects.DC.DAC
 		#region ProductNumber
 		[PXDBInt]
 		[PXDBDefault]
-		[PXSelector(typeof(Search<CmpePart.partid, Where<CmpePart.type.IsEqual<Manufactured>>>),
-		typeof(CmpePart.partid),
-		typeof(CmpePart.partcd),
-		SubstituteKey = typeof(CmpePart.partcd))]
+		[PXSelector(typeof(Search<CmpePart.partID, Where<CmpePart.type.IsEqual<Manufactured>>>),
+		typeof(CmpePart.partID),
+		typeof(CmpePart.partCD),
+		SubstituteKey = typeof(CmpePart.partCD))]
 		[PXUIField(DisplayName = "Product")]
 		public virtual int? ProductNumber { get; set; }
 		public abstract class productNumber : PX.Data.BQL.BqlInt.Field<productNumber> { }

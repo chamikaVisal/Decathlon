@@ -2,7 +2,6 @@
 using PX.Data;
 using PX.Data.BQL.Fluent;
 using PX.Data.BQL;
-using PX.Objects.DC.Descriptor;
 using Messages = PX.Objects.DC.Descriptor.Messages;
 using static PX.Objects.DC.Descriptor.Constants;
 
@@ -25,10 +24,10 @@ namespace PX.Objects.DC.DAC
 		#region NoPartID
 		[PXDBInt(IsKey = true)]
 		[PXDefault]
-		[PXSelector(typeof(Search<CmpePart.partid, Where<CmpePart.itemtype.IsEqual<NonStock>>>),
-		typeof(CmpePart.partcd),
+		[PXSelector(typeof(Search<CmpePart.partID, Where<CmpePart.itemType.IsEqual<NonStock>>>),
+		typeof(CmpePart.partCD),
 		typeof(CmpePart.description),
-		SubstituteKey = typeof(CmpePart.partcd))]
+		SubstituteKey = typeof(CmpePart.partCD))]
 		public virtual int? NoPartID { get; set; }
 		public abstract class noPartID : BqlInt.Field<noPartID> { }
 		#endregion
@@ -36,10 +35,10 @@ namespace PX.Objects.DC.DAC
 		#region PartID
 		[PXDBInt]
 		[PXDefault]
-		[PXSelector(typeof(Search<CmpePart.partid, Where<CmpePart.itemtype.IsEqual<Stock>>>),
-		typeof(CmpePart.partcd),
+		[PXSelector(typeof(Search<CmpePart.partID, Where<CmpePart.itemType.IsEqual<Stock>>>),
+		typeof(CmpePart.partCD),
 		typeof(CmpePart.description),
-		SubstituteKey = typeof(CmpePart.partcd))]
+		SubstituteKey = typeof(CmpePart.partCD))]
 		public virtual int? PartID { get; set; }
 		public abstract class partID : BqlInt.Field<partID> { }
 		#endregion
@@ -48,6 +47,7 @@ namespace PX.Objects.DC.DAC
 		[PXDBString(100)]
 		[PXDefault]
 		[PXUIField(DisplayName = "Description")]
+		[PXSelector(typeof(SelectFrom<CmpePart>.Where<CmpePart.partID.IsEqual<partID.FromCurrent>>.SearchFor<CmpePart.description>), SelectorMode = PXSelectorMode.MaskAutocomplete)]
 		public virtual string PartDescription { get; set; }
 		public abstract class partDescription : BqlString.Field<partDescription> { }
 		#endregion
@@ -80,18 +80,6 @@ namespace PX.Objects.DC.DAC
 		[PXDBString(20, IsUnicode = true, InputMask = "")]
 		[PXDefault(Messages.COItemRequired)]
 		[PXUIField(DisplayName = "Status")]
-		//[PXStringList(
-		//		new string[]{
-		//			CustomerOrderItemDetailsStatus.COItemRequired,
-		//			CustomerOrderItemDetailsStatus.COItemDelivered,
-		//			CustomerOrderItemDetailsStatus.COItemCancelled,
-		//		},
-		//		new string[]
-		//		{
-		//			Messages.COItemRequired,
-		//			Messages.COItemDelivered,
-		//			Messages.COItemCancelled
-		//		})]
 		public virtual string Status { get; set; }
 		public abstract class status : BqlString.Field<status> { }
 		#endregion
