@@ -26,12 +26,12 @@ namespace PX.Objects.DC.DAC
 		#endregion
 
 		#region PartID
-		[PXDBInt(IsKey =true)]
+		[PXDBInt(IsKey = true)]
 		[PXUIField(DisplayName = "Part Name")]
 		[PXDBDefault()]
 		[PXSelector(typeof(Search<CmpePart.partID, Where<CmpePart.type.IsEqual<Purchased>>>),
 		typeof(CmpePart.partCD),
-		typeof(CmpePart.description),SubstituteKey = typeof(CmpePart.partCD))]
+		typeof(CmpePart.description), SubstituteKey = typeof(CmpePart.partCD))] //change this to partcd
 		public virtual int? PartID { get; set; }
 		public abstract class partID : PX.Data.BQL.BqlInt.Field<partID> { }
 		#endregion
@@ -68,7 +68,7 @@ namespace PX.Objects.DC.DAC
 		#region QuantityInHand
 		[PXInt]
 		[PXUIField(Visible = false)]
-		[PXUnboundDefault(typeof(Search<CmpeInventoryAllocation.quantityInHand, Where<CmpeInventoryAllocation.partID,Equal<Current<partID>>>>))]
+		[PXUnboundDefault(typeof(Search<CmpeInventoryAllocation.quantityInHand, Where<CmpeInventoryAllocation.partID, Equal<Current<partID>>>>))]
 		public virtual int? QuantityInHand { get; set; }
 		public abstract class quantityInHand : PX.Data.BQL.BqlInt.Field<quantityInHand> { }
 		#endregion
@@ -130,6 +130,6 @@ namespace PX.Objects.DC.DAC
 		public new virtual int? PartID { get; set; }
 		public new abstract class partID : PX.Data.BQL.BqlInt.Field<partID> { }
 		#endregion
-		
+
 	}
 }

@@ -36,6 +36,7 @@ namespace PX.Objects.DC.DAC
 		#region PartDescription
 		[PXDBString(100)]
 		[PXDefault]
+		[PXFormula(typeof(Selector<CmpeCustomerOrderPartDetails.partID, CmpePart.description>))]
 		[PXUIField(DisplayName = "Description")]
 		public virtual string PartDescription { get; set; }
 		public abstract class partDescription : BqlString.Field<partDescription> { }
@@ -53,6 +54,7 @@ namespace PX.Objects.DC.DAC
 		[PXDBDecimal()]
 		[PXDefault(TypeCode.Decimal, "0.0")]
 		[PXUIField(DisplayName = "Price", Required = true)]
+		[PXFormula(typeof(Selector<CmpeCustomerOrderPartDetails.partID, CmpePart.price>))]
 		public virtual Decimal? Price { get; set; }
 		public abstract class price : BqlDecimal.Field<price> { }
 		#endregion

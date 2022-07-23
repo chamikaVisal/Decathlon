@@ -51,14 +51,14 @@ namespace PX.Objects.DC
 		[PXUIField(DisplayName = "Cancel", Enabled = true)]
 		protected virtual void cancelOrder()
 		{
-			if (CheckForNotDelivered() && CustomerOrderDetails.Current.Status.Trim() == CustomerOrderStatus.COReleased || CustomerOrderDetails.Current.Status.Trim() == CustomerOrderStatus.COPlanned)
+			if (IsAnyItemNotDelivered() && CustomerOrderDetails.Current.Status.Trim() == CustomerOrderStatus.COReleased || CustomerOrderDetails.Current.Status.Trim() == CustomerOrderStatus.COPlanned)
 			{
 				CmpeSalesOrder currentorder = CustomerOrderDetails.Current;
 				currentorder.Status = CustomerOrderStatus.COCancelled;
 				CustomerOrderDetails.UpdateCurrent();
 				Actions.PressSave();
 			}
-			ChangeStatusToCancelled();
+			ChangeItemStatusToCancelled();
 
 			Actions.PressSave();
 		}
@@ -78,39 +78,6 @@ namespace PX.Objects.DC
 
 
 		#region Events
-		protected void _(Events.FieldUpdated<CmpeCustomerOrderPartDetails, CmpeCustomerOrderPartDetails.partID> e)
-		{
-			CmpeCustomerOrderPartDetails row = e.Row;
-
-			if (row.PartID == null) return;
-
-			CmpePart part = CmpePart.PK.Find(this, row.PartID);
-
-			row.Price = part.Price;
-		}
-
-		protected void _(Events.FieldUpdated<CmpeCustomerOrderNoPartDetails, CmpeCustomerOrderNoPartDetails.noPartID> e)
-		{
-			CmpeCustomerOrderNoPartDetails row = e.Row;
-
-			if (row.NoPartID == null) return;
-
-			CmpePart part = CmpePart.PK.Find(this, row.NoPartID);
-
-			row.Price = part.Price;
-		}
-
-		protected void _(Events.FieldUpdated<CmpeSalesOrder, CmpeSalesOrder.customerID> e)
-		{
-			CmpeSalesOrder row = e.Row;
-
-			if (row.CustomerID == null) return;
-
-			CmpeCustomer customer = CmpeCustomer.PK.Find(this, row.CustomerID);
-
-			row.CustomerAddress = customer.Address;
-		}
-
 		protected void _(Events.RowSelected<CmpeSalesOrder> e)
 		{
 			CmpeSalesOrder row = e.Row;
@@ -154,7 +121,7 @@ namespace PX.Objects.DC
 					DeliverOrder.SetEnabled(false);
 					CancelOrder.SetEnabled(false);
 				}
-				if (!CheckForNotDelivered() && row.Status.Trim() != CustomerOrderItemDetailsStatus.COItemRequired)
+				if (!IsAnyItemNotDelivered() && row.Status.Trim() != CustomerOrderItemDetailsStatus.COItemRequired)
 				{
 					CustomerOrderDetails.Current.Status = CustomerOrderStatus.COClosed;
 					CustomerOrderDetails.UpdateCurrent();
@@ -247,7 +214,7 @@ namespace PX.Objects.DC
 			}
 		}
 
-		public bool CheckForNotDelivered()
+		public bool IsAnyItemNotDelivered()
 		{
 			bool isNotDelivered = false;
 
@@ -261,7 +228,7 @@ namespace PX.Objects.DC
 
 			return isNotDelivered;
 		}
-		public void ChangeStatusToCancelled()
+		public void ChangeItemStatusToCancelled()
 		{
 			foreach (CmpeCustomerOrderPartDetails item in CustomerOrderPartDetails.Select())
 			{

@@ -16,13 +16,14 @@ namespace PX.Objects.DC.DAC
 			public static CmpePart Find(PXGraph graph, int? partNo) => FindBy(graph, partNo);
 		}
 		#endregion
-		#region Partid
+
+		#region PartID
 		[PXDBIdentity]
 		public virtual int? PartID { get; set; }
 		public abstract class partID : PX.Data.BQL.BqlInt.Field<partID> { }
 		#endregion
 
-		#region Partcd
+		#region PartCD
 		[PXDBString(50, IsUnicode = true, InputMask = ">aaaaaaaaaaaaaaa", IsKey = true)]
 		[PXDefault]
 		[PXUIField(DisplayName = "Item Name")]
